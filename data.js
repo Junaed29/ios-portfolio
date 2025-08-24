@@ -13,7 +13,7 @@ const portfolioData = {
         skills: true,        // Technical skills section
         projects: true,      // Projects showcase
         experience: true,    // Professional experience timeline
-        testimonials: true,  // Client testimonials/reviews
+        testimonials: false,  // Client testimonials/reviews
         contact: true        // Contact information and form
     },
     
