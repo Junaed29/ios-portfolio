@@ -9,7 +9,7 @@ const portfolioData = {
         location: "Kuala Lumpur, Malaysia",
         email: "junaed.dev@gmail.com",
         phone: "+8801723605770",
-        experience: "5+ years",
+        experience: "5+ years total (1.5+ years iOS)",
         profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
         
         // Social Links
@@ -32,13 +32,13 @@ const portfolioData = {
         taglines: [
             "Building scalable, user-centric iOS applications",
             "SwiftUI specialist with modern Apple standards",
-            "From Android to iOS, mastering mobile development",
+            "5+ years mobile dev, 1.5+ years iOS expertise",
             "Creating App Store success stories"
         ],
         summary: "iOS Developer with SwiftUI expertise, passionate about building scalable, user-centric applications that align with modern Apple standards. With 5+ years of total mobile development experience and 1.5+ years specialized in iOS development, I have proven ability to modernize architectures, optimize performance, and deliver clean, maintainable code.",
         aboutText: [
             "iOS Developer with SwiftUI expertise, passionate about building scalable, user-centric applications that align with modern Apple standards. With 5+ years of total mobile development experience and 1.5+ years specialized in iOS development, I have proven ability to modernize architectures, optimize performance, and deliver clean, maintainable code.",
-            "My journey began with Android development using Java and Kotlin, where I built robust applications with modern architecture patterns. I successfully transitioned to iOS development, mastering Swift, SwiftUI, and the Apple ecosystem, which gives me unique cross-platform insights.",
+            "My journey began with Android development using Java and Kotlin, where I spent 3.5+ years building robust applications with modern architecture patterns. I successfully transitioned to iOS development in 2024, mastering Swift, SwiftUI, and the Apple ecosystem, which gives me unique cross-platform insights.",
             "I have contributed to App Store-published apps like Hooray Health and WellCall360, and created the SwiftUI Professional Network showcasing MVVM architecture, animations, and performance optimizations. Currently pursuing M.Sc. in Software Engineering at UTM Malaysia to further enhance my expertise."
         ]
     },
@@ -50,9 +50,9 @@ const portfolioData = {
         projects: 6,
         projectsLabel: "Projects",
         experience: 5,
-        experienceLabel: "Years Experience",
-        rating: 5.0,
-        ratingLabel: "App Store Rating"
+        experienceLabel: "Years Total Experience",
+        rating: 1.5,
+        ratingLabel: "Years iOS Experience"
     },
     
     // Technical Skills
