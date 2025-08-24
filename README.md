@@ -99,6 +99,41 @@ A stunning, interactive portfolio website showcasing iOS development expertise w
    - Use `sectionControl` to hide/show sections
    - Use `featureControl` to toggle specific features
 
+## 🚀 **Deployment to GitHub Pages**
+
+This portfolio is configured for automatic deployment to GitHub Pages. Every push to the main branch will automatically update your live website.
+
+### **Quick Deploy Steps**
+1. **Create GitHub Repository**
+   ```bash
+   # Go to GitHub.com and create a new repository
+   # Name it something like "ios-portfolio" or "portfolio-website"
+   ```
+
+2. **Connect Local Repository to GitHub**
+   ```bash
+   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
+   git add .
+   git commit -m "Initial portfolio deployment"
+   git push -u origin main
+   ```
+
+3. **Enable GitHub Pages**
+   - Go to your repository on GitHub
+   - Click **Settings** tab
+   - Scroll to **Pages** section
+   - Under **Source**, select **GitHub Actions**
+   - The workflow will automatically deploy your site
+
+4. **Access Your Live Portfolio**
+   ```
+   https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME/
+   ```
+
+### **Automatic Updates**
+- Every time you push to the `main` branch, GitHub Actions will automatically rebuild and deploy your portfolio
+- No manual intervention needed - just push your changes!
+
 ## ⚙️ **Control Panel Guide**
 
 ### **Section Controls** (`data.js`)
