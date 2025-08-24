@@ -721,6 +721,50 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
+        .project-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-logo {
+            transform: scale(1.1);
+        }
+
+        .project-icon-fallback {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Different gradient backgrounds for different project types */
+        .project-card:nth-child(1) .project-image {
+            background: linear-gradient(45deg, #007AFF, #5856D6);
+        }
+
+        .project-card:nth-child(2) .project-image {
+            background: linear-gradient(45deg, #34C759, #30D158);
+        }
+
+        .project-card:nth-child(3) .project-image {
+            background: linear-gradient(45deg, #FF9500, #FF6B35);
+        }
+
+        .project-card:nth-child(4) .project-image {
+            background: linear-gradient(45deg, #FF3B30, #FF453A);
+        }
+
+        .project-card:nth-child(5) .project-image {
+            background: linear-gradient(45deg, #AF52DE, #BF5AF2);
+        }
+
+        .project-card:nth-child(6) .project-image {
+            background: linear-gradient(45deg, #5AC8FA, #007AFF);
+        }
+
         .project-content {
             padding: 2rem;
         }

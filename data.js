@@ -112,6 +112,7 @@ const portfolioData = {
             demo: "https://youtube.com/shorts/BaY5gXrCIrs?feature=share",
             type: "iOS",
             icon: "fas fa-users",
+            image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=200&h=200&fit=crop&crop=center", // Professional networking themed image
             featured: true
         },
         {
@@ -122,6 +123,7 @@ const portfolioData = {
             demo: "https://apps.apple.com/us/app/hooray-health/id1285135333",
             type: "iOS",
             icon: "fas fa-heart",
+            image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=200&h=200&fit=crop&crop=center", // Healthcare themed image
             featured: true
         },
         {
@@ -132,6 +134,7 @@ const portfolioData = {
             demo: "https://apps.apple.com/us/app/wellcall360/id1485296723",
             type: "iOS",
             icon: "fas fa-phone",
+            image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=200&h=200&fit=crop&crop=center", // Communication/wellness themed image
             featured: false
         },
         {
@@ -142,6 +145,7 @@ const portfolioData = {
             demo: "https://play.google.com/store/search?q=hooray+health+app&c=apps&hl=en",
             type: "Android",
             icon: "fas fa-heart",
+            image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=200&h=200&fit=crop&crop=center", // Android/healthcare themed
             featured: false
         },
         {
@@ -152,6 +156,7 @@ const portfolioData = {
             demo: "https://play.google.com/store/apps/details?id=com.sul.purity",
             type: "Android",
             icon: "fas fa-book",
+            image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=200&h=200&fit=crop&crop=center", // Book/education themed
             featured: false
         },
         {
@@ -162,6 +167,7 @@ const portfolioData = {
             demo: "#",
             type: "Android",
             icon: "fas fa-graduation-cap",
+            image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&h=200&fit=crop&crop=center", // Education/university themed
             featured: false
         }
     ],

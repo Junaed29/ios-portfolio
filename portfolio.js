@@ -276,7 +276,7 @@ class PortfolioController {
         projectsGrid.innerHTML = this.data.projects.map(project => `
             <div class="project-card scale-up">
                 <div class="project-image">
-                    <i class="${project.icon}"></i>
+                    ${this.renderProjectImage(project)}
                 </div>
                 <div class="project-content">
                     <h3 class="project-title">${project.title}</h3>
@@ -295,6 +295,23 @@ class PortfolioController {
                 </div>
             </div>
         `).join('');
+    }
+
+    renderProjectImage(project) {
+        // Check if project has a valid image URL
+        if (project.image && project.image.trim() !== '' && project.image !== '#') {
+            return `
+                <img src="${project.image}" 
+                     alt="${project.title} icon" 
+                     class="project-logo"
+                     loading="lazy"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; console.warn('Failed to load image for ${project.title}');">
+                <i class="${project.icon} project-icon-fallback" style="display: none;"></i>
+            `;
+        } else {
+            // Fallback to icon
+            return `<i class="${project.icon}"></i>`;
+        }
     }
 
     getProjectLinkText(type) {
