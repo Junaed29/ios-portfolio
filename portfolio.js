@@ -22,14 +22,23 @@ class PortfolioController {
             this.populateContent();
             console.log('✅ Content populated');
             
+            // Set up animations after content is populated
+            this.initScrollAnimations();
+            console.log('✅ Scroll animations initialized');
+            
+            this.animateCounters();
+            console.log('✅ Counter animations initialized');
+            
+            // Set up skill bar animations after a short delay to ensure DOM is ready
+            setTimeout(() => {
+                this.animateSkillBars();
+            }, 500);
+            
             this.bindEvents();
             console.log('✅ Events bound');
             
             this.startTypingEffect();
             console.log('✅ Typing effect started');
-            
-            this.initScrollAnimations();
-            console.log('✅ Scroll animations initialized');
             
             // Background effects - re-enabling gradually
             try {
@@ -201,14 +210,27 @@ class PortfolioController {
     }
 
     populateSkillsSection() {
+        console.log('🔄 Populating skills section...');
+        
         const skillsTitle = document.querySelector('#skills .section-title');
-        if (skillsTitle) skillsTitle.textContent = this.data.sections.skills.title;
+        if (skillsTitle) {
+            skillsTitle.textContent = this.data.sections.skills.title;
+            console.log('✅ Skills title updated');
+        }
 
         const skillsSubtitle = document.querySelector('#skills .section-subtitle');
-        if (skillsSubtitle) skillsSubtitle.textContent = this.data.sections.skills.subtitle;
+        if (skillsSubtitle) {
+            skillsSubtitle.textContent = this.data.sections.skills.subtitle;
+            console.log('✅ Skills subtitle updated');
+        }
 
         const skillsGrid = document.querySelector('.skills-grid');
-        if (!skillsGrid) return;
+        if (!skillsGrid) {
+            console.error('❌ Skills grid not found');
+            return;
+        }
+
+        console.log('📊 Skills data:', this.data.skills);
 
         skillsGrid.innerHTML = Object.values(this.data.skills).map(category => `
             <div class="skill-category scale-up">
@@ -226,6 +248,16 @@ class PortfolioController {
                 `).join('')}
             </div>
         `).join('');
+        
+        console.log('✅ Skills grid populated');
+        
+        // Immediately trigger skill bar animation setup
+        setTimeout(() => {
+            this.animateSkillBars();
+            
+            // Also add a manual trigger for testing
+            this.addManualSkillBarTrigger();
+        }, 100);
     }
 
     populateProjectsSection() {
@@ -864,8 +896,18 @@ class PortfolioController {
     }
 
     animateSkillBars() {
+        console.log('🔄 Setting up skill bar animations...');
+        
+        const skillBars = document.querySelectorAll('.skill-progress[data-width]');
+        console.log(`📊 Found ${skillBars.length} skill bars to animate`);
+        
+        if (skillBars.length === 0) {
+            console.warn('⚠️ No skill bars found with data-width attribute');
+            return;
+        }
+
         const observerOptions = {
-            threshold: 0.3,
+            threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
 
@@ -875,17 +917,19 @@ class PortfolioController {
                     const skillProgress = entry.target;
                     const width = skillProgress.getAttribute('data-width');
                     
+                    console.log(`🎯 Animating skill bar to ${width}%`);
+                    
                     // Add a slight delay for staggered animation
                     const delay = Array.from(entry.target.parentNode.parentNode.children).indexOf(entry.target.parentNode) * 100;
                     
                     setTimeout(() => {
                         skillProgress.style.width = width + '%';
+                        skillProgress.style.opacity = '1';
                         
                         // Add a class to trigger any additional animations
                         skillProgress.classList.add('animated');
                         
-                        // Log for debugging
-                        console.log(`✅ Skill bar animated: ${width}%`);
+                        console.log(`✅ Skill bar animated to ${width}%`);
                     }, delay);
                     
                     observer.unobserve(skillProgress);
@@ -893,9 +937,38 @@ class PortfolioController {
             });
         }, observerOptions);
 
-        document.querySelectorAll('.skill-progress[data-width]').forEach(bar => {
+        skillBars.forEach((bar, index) => {
+            console.log(`🔍 Observing skill bar ${index + 1}: ${bar.getAttribute('data-width')}%`);
             observer.observe(bar);
         });
+        
+        console.log('✅ Skill bar animation observer set up');
+    }
+
+    addManualSkillBarTrigger() {
+        // Add a manual trigger for testing
+        window.triggerSkillBars = () => {
+            console.log('🔧 Manual skill bar trigger activated');
+            const skillBars = document.querySelectorAll('.skill-progress[data-width]');
+            skillBars.forEach((bar, index) => {
+                const width = bar.getAttribute('data-width');
+                setTimeout(() => {
+                    bar.style.width = width + '%';
+                    bar.style.opacity = '1';
+                    bar.classList.add('animated');
+                    console.log(`✅ Manual animation: ${width}%`);
+                }, index * 100);
+            });
+        };
+        
+        // Auto-trigger after 3 seconds if not already animated
+        setTimeout(() => {
+            const skillBars = document.querySelectorAll('.skill-progress[data-width]:not(.animated)');
+            if (skillBars.length > 0) {
+                console.log('🔧 Auto-triggering skill bars (fallback)');
+                window.triggerSkillBars();
+            }
+        }, 3000);
     }
 
     initScrollAnimations() {

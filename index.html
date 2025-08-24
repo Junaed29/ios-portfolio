@@ -597,10 +597,15 @@
             height: 100%;
             background: var(--gradient-primary);
             border-radius: 3px;
-            transition: width 2s ease;
+            transition: width 2s ease, opacity 0.5s ease;
             width: 0%;
+            opacity: 0;
             position: relative;
             overflow: hidden;
+        }
+
+        .skill-progress.animated {
+            opacity: 1;
         }
 
         /* Different colors for different skill categories */
