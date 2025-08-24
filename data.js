@@ -24,8 +24,9 @@ const portfolioData = {
         
         // Resume/CV
         resume: {
-            url: "#", // Add your resume URL here
-            filename: "Junaed_Muhammad_Chowdhury_Resume.pdf"
+            url: "https://drive.google.com/file/d/your-resume-file-id/view", // Replace with your actual resume URL
+            filename: "Junaed_Muhammad_Chowdhury_Resume.pdf",
+            isAvailable: true // Set to false if resume is not ready
         }
     },
     

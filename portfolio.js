@@ -164,6 +164,9 @@ class PortfolioController {
                 heroButtons.innerHTML = `
                     <a href="#contact" class="btn btn-primary">Get In Touch</a>
                     <a href="${this.data.personal.social.github}" class="btn btn-secondary" target="_blank">View GitHub</a>
+                    <button onclick="downloadResume()" class="btn btn-accent">
+                        <i class="fas fa-download"></i> Download Resume
+                    </button>
                 `;
                 console.log('✅ Hero buttons updated');
             } else {
@@ -370,6 +373,31 @@ class PortfolioController {
                 </div>
             </div>
         `).join('');
+        
+        // Add resume download button to contact section
+        const resumeButton = document.createElement('div');
+        resumeButton.className = 'contact-item scale-up resume-download';
+        resumeButton.innerHTML = `
+            <div class="contact-icon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            <div>
+                <h4>Resume</h4>
+                <p>Download my professional resume</p>
+            </div>
+        `;
+        resumeButton.style.cursor = 'pointer';
+        resumeButton.onclick = downloadResume;
+        resumeButton.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                downloadResume();
+            }
+        };
+        resumeButton.setAttribute('tabindex', '0');
+        resumeButton.setAttribute('role', 'button');
+        resumeButton.setAttribute('aria-label', 'Download resume PDF');
+        contactInfo.appendChild(resumeButton);
     }
 
     populateFooter() {
@@ -1050,10 +1078,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Utility Functions
 function downloadResume() {
-    if (portfolioData.personal.resume.url && portfolioData.personal.resume.url !== '#') {
-        window.open(portfolioData.personal.resume.url, '_blank');
+    console.log('📄 Download resume requested');
+    
+    if (!portfolioData || !portfolioData.personal || !portfolioData.personal.resume) {
+        showNotification('Resume data not available!', 'error');
+        return;
+    }
+    
+    const resume = portfolioData.personal.resume;
+    
+    if (!resume.isAvailable) {
+        showNotification('Resume will be available soon! Please contact me directly.', 'info');
+        return;
+    }
+    
+    if (resume.url && resume.url !== '#' && resume.url !== '') {
+        // Track resume download
+        console.log('📄 Opening resume:', resume.filename);
+        
+        // Open resume in new tab
+        window.open(resume.url, '_blank');
+        
+        // Show success message
+        showNotification(`Opening ${resume.filename}...`, 'success');
+        
+        // Optional: Track analytics (if you have Google Analytics)
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'resume_download', {
+                'event_category': 'engagement',
+                'event_label': 'resume'
+            });
+        }
     } else {
-        showNotification('Resume will be available soon!', 'info');
+        // Fallback - show contact information
+        showNotification('Please contact me directly for my resume!', 'info');
+        
+        // Optional: scroll to contact section
+        setTimeout(() => {
+            const contactSection = document.querySelector('#contact');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 1000);
     }
 }
 
