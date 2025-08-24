@@ -4,6 +4,51 @@
 console.log('🔄 Loading portfolio data...');
 
 const portfolioData = {
+    // ===== MAIN CONTROL PANEL =====
+    // Control which sections to show/hide on your portfolio
+    // Set to false to hide a section, true to show it
+    sectionControl: {
+        hero: true,          // Hero section with your name and intro
+        about: true,         // About section with bio and stats
+        skills: true,        // Technical skills section
+        projects: true,      // Projects showcase
+        experience: true,    // Professional experience timeline
+        testimonials: true,  // Client testimonials/reviews
+        contact: true        // Contact information and form
+    },
+    
+    // ===== FEATURE CONTROL PANEL =====
+    // Control specific features within sections
+    featureControl: {
+        animations: {
+            particles: true,           // Floating particles background
+            neuralNetwork: true,       // Neural network animation
+            matrixRain: true,         // Matrix rain effect
+            holographicGrid: true,    // Holographic grid background
+            dnaHelix: true,           // DNA helix animation
+            cursorEffects: true,      // Interactive cursor effects
+            typingEffect: true,       // Typing animation in hero
+            scrollAnimations: true    // Scroll-triggered animations
+        },
+        navigation: {
+            showLogo: true,           // Show logo in navigation
+            showMobileMenu: true,     // Show mobile hamburger menu
+            autoHideOnScroll: true    // Auto-hide navigation on scroll
+        },
+        projects: {
+            showImages: true,         // Show project images (fallback to icons if false)
+            showGithubLinks: true,    // Show GitHub links
+            showDemoLinks: true,      // Show demo/live links
+            showTechnologies: true    // Show technology tags
+        },
+        contact: {
+            showContactForm: true,    // Show contact form
+            showContactInfo: true,    // Show contact information cards
+            showSocialLinks: true,    // Show social media links
+            showResumeDownload: true  // Show resume download option
+        }
+    },
+
     // Personal Information
     personal: {
         name: "Junaed Muhammad Chowdhury",

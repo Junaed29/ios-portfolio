@@ -41,11 +41,14 @@ class PortfolioController {
             console.log('✅ Typing effect started');
             
             // Background effects - re-enabling gradually
-            try {
-                this.createParticles(); // Re-enable particles first
-                console.log('✅ Particles created');
-            } catch (particleError) {
-                console.warn('⚠️ Particles failed, continuing without them:', particleError);
+            // Enable particles if allowed
+            if (this.data.featureControl.animations.particles !== false) {
+                try {
+                    this.createParticles(); // Re-enable particles first
+                    console.log('✅ Particles created');
+                } catch (particleError) {
+                    console.warn('⚠️ Particles failed, continuing without them:', particleError);
+                }
             }
             
             // Cursor effects - re-enable
@@ -56,18 +59,28 @@ class PortfolioController {
                 console.warn('⚠️ Cursor effects failed, continuing without them:', cursorError);
             }
             
-                        // Advanced background effects - re-enable now that core features work
-            try {
-                this.createAdvancedBackgroundEffects();
-                console.log('✅ Advanced background effects created');
-            } catch (bgError) {
-                console.warn('⚠️ Background effects failed, continuing without them:', bgError);
+            // Advanced background effects - re-enable now that core features work
+            if (this.shouldLoadAdvancedEffects()) {
+                try {
+                    this.createAdvancedBackgroundEffects();
+                    console.log('✅ Advanced background effects created');
+                } catch (bgError) {
+                    console.warn('⚠️ Background effects failed, continuing without them:', bgError);
+                }
             }
             
             console.log('✅ All initialization complete!');
         } catch (error) {
             console.error('❌ Error during initialization:', error);
         }
+    }
+
+    shouldLoadAdvancedEffects() {
+        const effects = this.data.featureControl.animations;
+        return effects.neuralNetwork !== false || 
+               effects.matrixRain !== false || 
+               effects.holographicGrid !== false || 
+               effects.dnaHelix !== false;
     }
 
     init() {
@@ -104,14 +117,31 @@ class PortfolioController {
     populateContent() {
         console.log('🔄 Populating content...');
         try {
+            this.applySectionControls();
             this.populateNavigation();
-            this.populateHeroSection();
-            this.populateAboutSection();
-            this.populateSkillsSection();
-            this.populateProjectsSection();
-            this.populateExperienceSection();
-            this.populateTestimonialsSection();
-            this.populateContactSection();
+            
+            if (this.data.sectionControl.hero !== false) {
+                this.populateHeroSection();
+            }
+            if (this.data.sectionControl.about !== false) {
+                this.populateAboutSection();
+            }
+            if (this.data.sectionControl.skills !== false) {
+                this.populateSkillsSection();
+            }
+            if (this.data.sectionControl.projects !== false) {
+                this.populateProjectsSection();
+            }
+            if (this.data.sectionControl.experience !== false) {
+                this.populateExperienceSection();
+            }
+            if (this.data.sectionControl.testimonials !== false) {
+                this.populateTestimonialsSection();
+            }
+            if (this.data.sectionControl.contact !== false) {
+                this.populateContactSection();
+            }
+            
             this.populateFooter();
             console.log('✅ Content populated successfully!');
         } catch (error) {
@@ -119,13 +149,40 @@ class PortfolioController {
         }
     }
 
+    applySectionControls() {
+        console.log('🎛️ Applying section controls...');
+        
+        // Hide sections that are disabled
+        Object.keys(this.data.sectionControl).forEach(sectionKey => {
+            if (this.data.sectionControl[sectionKey] === false) {
+                const sectionId = sectionKey === 'hero' ? 'home' : sectionKey;
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionElement.style.display = 'none';
+                    console.log(`🚫 Hidden section: ${sectionKey}`);
+                }
+            }
+        });
+        
+        console.log('✅ Section controls applied');
+    }
+
     populateNavigation() {
         const navLinks = document.getElementById('navLinks');
         if (!navLinks) return;
 
-        navLinks.innerHTML = this.data.navigation.map(item => 
-            `<li><a href="${item.href}" ${item.id === 'home' ? 'class="active"' : ''}>${item.label}</a></li>`
+        // Filter navigation based on section control
+        const visibleSections = this.data.navigation.filter(item => {
+            // Map navigation items to section control keys
+            const sectionKey = item.id === 'home' ? 'hero' : item.id;
+            return this.data.sectionControl[sectionKey] !== false;
+        });
+
+        navLinks.innerHTML = visibleSections.map((item, index) => 
+            `<li><a href="${item.href}" ${index === 0 ? 'class="active"' : ''}>${item.label}</a></li>`
         ).join('');
+        
+        console.log('✅ Navigation updated with visible sections:', visibleSections.map(s => s.label));
     }
 
     populateHeroSection() {
@@ -281,25 +338,45 @@ class PortfolioController {
                 <div class="project-content">
                     <h3 class="project-title">${project.title}</h3>
                     <p class="project-description">${project.description}</p>
-                    <div class="project-tags">
-                        ${project.technologies.map(tech => `<span class="tag">${tech}</span>`).join('')}
-                    </div>
+                    ${this.data.featureControl.projects.showTechnologies !== false ? `
+                        <div class="project-tags">
+                            ${project.technologies.map(tech => `<span class="tag">${tech}</span>`).join('')}
+                        </div>
+                    ` : ''}
                     <div class="project-links">
-                        <a href="${project.github}" class="project-link" ${project.github !== '#' ? 'target="_blank"' : ''}>
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
-                        <a href="${project.demo}" class="project-link" ${project.demo !== '#' ? 'target="_blank"' : ''}>
-                            <i class="fas fa-external-link-alt"></i> ${this.getProjectLinkText(project.type)}
-                        </a>
+                        ${this.renderProjectLinks(project)}
                     </div>
                 </div>
             </div>
         `).join('');
     }
 
+    renderProjectLinks(project) {
+        const links = [];
+        
+        if (this.data.featureControl.projects.showGithubLinks !== false) {
+            links.push(`
+                <a href="${project.github}" class="project-link" ${project.github !== '#' ? 'target="_blank"' : ''}>
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            `);
+        }
+        
+        if (this.data.featureControl.projects.showDemoLinks !== false) {
+            links.push(`
+                <a href="${project.demo}" class="project-link" ${project.demo !== '#' ? 'target="_blank"' : ''}>
+                    <i class="fas fa-external-link-alt"></i> ${this.getProjectLinkText(project.type)}
+                </a>
+            `);
+        }
+        
+        return links.join('');
+    }
+
     renderProjectImage(project) {
-        // Check if project has a valid image URL
-        if (project.image && project.image.trim() !== '' && project.image !== '#') {
+        // Check if images are enabled and project has a valid image URL
+        if (this.data.featureControl.projects.showImages !== false && 
+            project.image && project.image.trim() !== '' && project.image !== '#') {
             return `
                 <img src="${project.image}" 
                      alt="${project.title} icon" 
@@ -309,7 +386,7 @@ class PortfolioController {
                 <i class="${project.icon} project-icon-fallback" style="display: none;"></i>
             `;
         } else {
-            // Fallback to icon
+            // Fallback to icon (either images disabled or no image available)
             return `<i class="${project.icon}"></i>`;
         }
     }
@@ -376,50 +453,72 @@ class PortfolioController {
         const contactSubtitle = document.querySelector('#contact .section-subtitle');
         if (contactSubtitle) contactSubtitle.textContent = this.data.sections.contact.subtitle;
 
+        // Handle contact info
         const contactInfo = document.querySelector('.contact-info');
-        if (!contactInfo) return;
-
-        contactInfo.innerHTML = this.data.contact.items.map(item => `
-            <div class="contact-item scale-up">
-                <div class="contact-icon">
-                    <i class="${item.icon}"></i>
+        if (contactInfo && this.data.featureControl.contact.showContactInfo !== false) {
+            contactInfo.innerHTML = this.data.contact.items.map(item => `
+                <div class="contact-item scale-up">
+                    <div class="contact-icon">
+                        <i class="${item.icon}"></i>
+                    </div>
+                    <div>
+                        <h4>${item.title}</h4>
+                        <p>${item.value}</p>
+                    </div>
                 </div>
-                <div>
-                    <h4>${item.title}</h4>
-                    <p>${item.value}</p>
-                </div>
-            </div>
-        `).join('');
-        
-        // Add resume download button to contact section
-        const resumeButton = document.createElement('div');
-        resumeButton.className = 'contact-item scale-up resume-download';
-        resumeButton.innerHTML = `
-            <div class="contact-icon">
-                <i class="fas fa-file-pdf"></i>
-            </div>
-            <div>
-                <h4>Resume</h4>
-                <p>Download my professional resume</p>
-            </div>
-        `;
-        resumeButton.style.cursor = 'pointer';
-        resumeButton.onclick = downloadResume;
-        resumeButton.onkeydown = (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                downloadResume();
+            `).join('');
+            
+            // Add resume download button if enabled
+            if (this.data.featureControl.contact.showResumeDownload !== false) {
+                const resumeButton = document.createElement('div');
+                resumeButton.className = 'contact-item scale-up resume-download';
+                resumeButton.innerHTML = `
+                    <div class="contact-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div>
+                        <h4>Resume</h4>
+                        <p>Download my professional resume</p>
+                    </div>
+                `;
+                resumeButton.style.cursor = 'pointer';
+                resumeButton.onclick = downloadResume;
+                resumeButton.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        downloadResume();
+                    }
+                };
+                resumeButton.setAttribute('tabindex', '0');
+                resumeButton.setAttribute('role', 'button');
+                resumeButton.setAttribute('aria-label', 'Download resume PDF');
+                contactInfo.appendChild(resumeButton);
             }
-        };
-        resumeButton.setAttribute('tabindex', '0');
-        resumeButton.setAttribute('role', 'button');
-        resumeButton.setAttribute('aria-label', 'Download resume PDF');
-        contactInfo.appendChild(resumeButton);
+        } else if (contactInfo) {
+            contactInfo.style.display = 'none';
+        }
+
+        // Handle contact form
+        const contactForm = document.querySelector('.contact-form');
+        if (contactForm && this.data.featureControl.contact.showContactForm === false) {
+            contactForm.style.display = 'none';
+        }
+        
+        // Adjust contact content layout if one section is hidden
+        const contactContent = document.querySelector('.contact-content');
+        if (contactContent) {
+            const infoHidden = this.data.featureControl.contact.showContactInfo === false;
+            const formHidden = this.data.featureControl.contact.showContactForm === false;
+            
+            if (infoHidden || formHidden) {
+                contactContent.style.gridTemplateColumns = '1fr';
+            }
+        }
     }
 
     populateFooter() {
         const socialLinks = document.querySelector('.social-links');
-        if (socialLinks) {
+        if (socialLinks && this.data.featureControl.contact.showSocialLinks !== false) {
             socialLinks.innerHTML = `
                 <a href="${this.data.personal.social.github}" class="social-link" target="_blank">
                     <i class="fab fa-github"></i>
@@ -431,6 +530,8 @@ class PortfolioController {
                     <i class="fas fa-envelope"></i>
                 </a>
             `;
+        } else if (socialLinks) {
+            socialLinks.style.display = 'none';
         }
 
         const footerText = document.querySelector('footer p');
@@ -655,10 +756,28 @@ class PortfolioController {
     createAdvancedBackgroundEffects() {
         console.log('🔄 Creating advanced background effects...');
         try {
-            this.createNeuralNetwork();
-            this.createMatrixRain();
-            this.createHolographicGrid();
-            this.createDNAHelix();
+            const animations = this.data.featureControl.animations;
+            
+            if (animations.neuralNetwork !== false) {
+                this.createNeuralNetwork();
+                console.log('✅ Neural network effect created');
+            }
+            
+            if (animations.matrixRain !== false) {
+                this.createMatrixRain();
+                console.log('✅ Matrix rain effect created');
+            }
+            
+            if (animations.holographicGrid !== false) {
+                this.createHolographicGrid();
+                console.log('✅ Holographic grid effect created');
+            }
+            
+            if (animations.dnaHelix !== false) {
+                this.createDNAHelix();
+                console.log('✅ DNA helix effect created');
+            }
+            
             console.log('✅ Advanced background effects created');
         } catch (error) {
             console.error('❌ Error creating background effects:', error);
