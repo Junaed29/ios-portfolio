@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+        }
+        .debug-info {
+            background: #222;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Portfolio Debug Page</h1>
+    
+    <div class="debug-info" id="dataStatus">
+        <h3>Data Loading Status</h3>
+        <p id="dataCheck">Checking...</p>
+    </div>
+    
+    <div class="debug-info" id="contentTest">
+        <h3>Content Test</h3>
+        <div id="heroName">Name will appear here</div>
+        <div id="heroTitle">Title will appear here</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script>
+        console.log('🔍 Debug page loaded');
+        
+        // Check if data is available
+        if (typeof portfolioData !== 'undefined') {
+            document.getElementById('dataCheck').innerHTML = '✅ Portfolio data loaded successfully!';
+            console.log('✅ Data available:', portfolioData);
+            
+            // Test content population
+            document.getElementById('heroName').textContent = portfolioData.personal.name;
+            document.getElementById('heroTitle').textContent = portfolioData.personal.title;
+            
+        } else {
+            document.getElementById('dataCheck').innerHTML = '❌ Portfolio data not found!';
+            console.error('❌ Portfolio data not available');
+        }
+    </script>
+</body>
+</html>

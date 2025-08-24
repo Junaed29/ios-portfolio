@@ -1,6 +1,8 @@
 // Portfolio Data Configuration
 // Update this file with your personal information, projects, and content
 
+console.log('🔄 Loading portfolio data...');
+
 const portfolioData = {
     // Personal Information
     personal: {
@@ -297,6 +299,8 @@ const portfolioData = {
         keywords: "iOS Developer, SwiftUI, Mobile App Development, Swift, iOS Apps, Mobile Developer"
     }
 };
+
+console.log('✅ Portfolio data loaded successfully!');
 
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {

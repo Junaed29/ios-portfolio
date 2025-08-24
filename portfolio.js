@@ -1,15 +1,64 @@
 // Portfolio Controller - Handles all interactions and animations
 // This file connects the data with the HTML elements
 
+console.log('🔄 Loading portfolio controller...');
+
 class PortfolioController {
     constructor() {
+        console.log('🔄 Initializing Portfolio Controller...');
+        
+        if (typeof portfolioData === 'undefined') {
+            console.error('❌ portfolioData is not defined!');
+            return;
+        }
+        
         this.data = portfolioData;
-        this.init();
-        this.bindEvents();
-        this.populateContent();
-        this.createParticles();
-        this.startTypingEffect();
-        this.initScrollAnimations();
+        console.log('✅ Data loaded:', this.data);
+        
+        try {
+            this.init();
+            console.log('✅ Init complete');
+            
+            this.populateContent();
+            console.log('✅ Content populated');
+            
+            this.bindEvents();
+            console.log('✅ Events bound');
+            
+            this.startTypingEffect();
+            console.log('✅ Typing effect started');
+            
+            this.initScrollAnimations();
+            console.log('✅ Scroll animations initialized');
+            
+            // Background effects - re-enabling gradually
+            try {
+                this.createParticles(); // Re-enable particles first
+                console.log('✅ Particles created');
+            } catch (particleError) {
+                console.warn('⚠️ Particles failed, continuing without them:', particleError);
+            }
+            
+            // Cursor effects - re-enable
+            try {
+                this.initInteractiveCursor();
+                console.log('✅ Interactive cursor initialized');
+            } catch (cursorError) {
+                console.warn('⚠️ Cursor effects failed, continuing without them:', cursorError);
+            }
+            
+                        // Advanced background effects - re-enable now that core features work
+            try {
+                this.createAdvancedBackgroundEffects();
+                console.log('✅ Advanced background effects created');
+            } catch (bgError) {
+                console.warn('⚠️ Background effects failed, continuing without them:', bgError);
+            }
+            
+            console.log('✅ All initialization complete!');
+        } catch (error) {
+            console.error('❌ Error during initialization:', error);
+        }
     }
 
     init() {
@@ -44,15 +93,21 @@ class PortfolioController {
     }
 
     populateContent() {
-        this.populateNavigation();
-        this.populateHeroSection();
-        this.populateAboutSection();
-        this.populateSkillsSection();
-        this.populateProjectsSection();
-        this.populateExperienceSection();
-        this.populateTestimonialsSection();
-        this.populateContactSection();
-        this.populateFooter();
+        console.log('🔄 Populating content...');
+        try {
+            this.populateNavigation();
+            this.populateHeroSection();
+            this.populateAboutSection();
+            this.populateSkillsSection();
+            this.populateProjectsSection();
+            this.populateExperienceSection();
+            this.populateTestimonialsSection();
+            this.populateContactSection();
+            this.populateFooter();
+            console.log('✅ Content populated successfully!');
+        } catch (error) {
+            console.error('❌ Error populating content:', error);
+        }
     }
 
     populateNavigation() {
@@ -65,27 +120,48 @@ class PortfolioController {
     }
 
     populateHeroSection() {
-        // Update hero image
-        const heroImage = document.querySelector('.hero-image img');
-        if (heroImage) {
-            heroImage.src = this.data.personal.profileImage;
-            heroImage.alt = this.data.personal.name;
-        }
+        console.log('🔄 Populating hero section...');
+        try {
+            // Update hero image
+            const heroImage = document.querySelector('.hero-image img');
+            if (heroImage) {
+                heroImage.src = this.data.personal.profileImage;
+                heroImage.alt = this.data.personal.name;
+                console.log('✅ Hero image updated');
+            } else {
+                console.warn('⚠️ Hero image element not found');
+            }
 
-        // Update name and title
-        const heroName = document.querySelector('.hero h1');
-        if (heroName) heroName.textContent = this.data.personal.name;
+            // Update name and title
+            const heroName = document.querySelector('.hero h1');
+            if (heroName) {
+                heroName.textContent = this.data.personal.name;
+                console.log('✅ Hero name updated:', this.data.personal.name);
+            } else {
+                console.warn('⚠️ Hero name element not found');
+            }
 
-        const heroSubtitle = document.querySelector('.hero-subtitle');
-        if (heroSubtitle) heroSubtitle.textContent = this.data.personal.title;
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            if (heroSubtitle) {
+                heroSubtitle.textContent = this.data.personal.title;
+                console.log('✅ Hero subtitle updated');
+            } else {
+                console.warn('⚠️ Hero subtitle element not found');
+            }
 
-        // Update buttons
-        const heroButtons = document.querySelector('.hero-buttons');
-        if (heroButtons) {
-            heroButtons.innerHTML = `
-                <a href="#contact" class="btn btn-primary">Get In Touch</a>
-                <a href="${this.data.personal.social.github}" class="btn btn-secondary" target="_blank">View GitHub</a>
-            `;
+            // Update buttons
+            const heroButtons = document.querySelector('.hero-buttons');
+            if (heroButtons) {
+                heroButtons.innerHTML = `
+                    <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                    <a href="${this.data.personal.social.github}" class="btn btn-secondary" target="_blank">View GitHub</a>
+                `;
+                console.log('✅ Hero buttons updated');
+            } else {
+                console.warn('⚠️ Hero buttons element not found');
+            }
+        } catch (error) {
+            console.error('❌ Error in populateHeroSection:', error);
         }
     }
 
@@ -415,18 +491,290 @@ class PortfolioController {
         const particlesContainer = document.getElementById('particles');
         if (!particlesContainer) return;
 
-        const particleCount = 50;
+        // Clear existing particles
+        particlesContainer.innerHTML = '';
         
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.cssText = `
-                left: ${Math.random() * 100}%;
-                animation-delay: ${Math.random() * 6}s;
-                animation-duration: ${4 + Math.random() * 4}s;
+        // Create enhanced particle system
+        this.createFloatingParticles(particlesContainer);
+        this.createCodeElements(particlesContainer);
+        this.createGeometricShapes(particlesContainer);
+    }
+
+    createFloatingParticles(container) {
+        const particleTypes = ['small', 'medium', 'large', 'glow'];
+        const particleCount = { small: 25, medium: 15, large: 10, glow: 8 };
+        
+        particleTypes.forEach(type => {
+            for (let i = 0; i < particleCount[type]; i++) {
+                const particle = document.createElement('div');
+                particle.className = `particle ${type}`;
+                particle.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation-delay: ${Math.random() * 10}s;
+                    animation-duration: ${this.getAnimationDuration(type)};
+                `;
+                container.appendChild(particle);
+            }
+        });
+    }
+
+    createCodeElements(container) {
+        const codeSnippets = [
+            'func viewDidLoad()',
+            '@State var isAnimating',
+            'SwiftUI.Animation',
+            'class ViewController',
+            'import SwiftUI',
+            'var body: some View',
+            '@ObservableObject',
+            'NavigationView',
+            'ZStack { }',
+            '.onAppear { }',
+            'Button("Action")',
+            '@Binding var data',
+            'List(items) { }',
+            'ForEach(0..<10)',
+            '.animation(.spring)',
+            'struct ContentView',
+            'protocol Delegate',
+            'enum State { }',
+            '.transition(.slide)',
+            'Color.blue.opacity'
+        ];
+
+        const codeElementCount = 12;
+        
+        for (let i = 0; i < codeElementCount; i++) {
+            const codeElement = document.createElement('div');
+            codeElement.className = 'code-element';
+            codeElement.textContent = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+            codeElement.style.cssText = `
+                left: ${Math.random() * 90}%;
+                animation-delay: ${Math.random() * 15}s;
+                animation-duration: ${15 + Math.random() * 10}s;
             `;
-            particlesContainer.appendChild(particle);
+            container.appendChild(codeElement);
         }
+    }
+
+    createGeometricShapes(container) {
+        const shapes = ['triangle', 'square', 'circle'];
+        const shapeCount = 8;
+        
+        for (let i = 0; i < shapeCount; i++) {
+            const shape = document.createElement('div');
+            const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
+            shape.className = `geometric-shape ${shapeType}`;
+            shape.style.cssText = `
+                left: ${Math.random() * 95}%;
+                animation-delay: ${Math.random() * 20}s;
+                animation-duration: ${20 + Math.random() * 15}s;
+            `;
+            container.appendChild(shape);
+        }
+    }
+
+    createAdvancedBackgroundEffects() {
+        console.log('🔄 Creating advanced background effects...');
+        try {
+            this.createNeuralNetwork();
+            this.createMatrixRain();
+            this.createHolographicGrid();
+            this.createDNAHelix();
+            console.log('✅ Advanced background effects created');
+        } catch (error) {
+            console.error('❌ Error creating background effects:', error);
+        }
+    }
+
+    createNeuralNetwork() {
+        try {
+            const neuralNetwork = document.createElement('div');
+            neuralNetwork.className = 'neural-network';
+            document.body.appendChild(neuralNetwork);
+
+            // Create nodes
+            const nodeCount = 15;
+            const nodes = [];
+            
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'network-node';
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                node.style.cssText = `
+                    left: ${x}px;
+                    top: ${y}px;
+                    animation-delay: ${Math.random() * 20}s;
+                `;
+                neuralNetwork.appendChild(node);
+                nodes.push({ element: node, x, y });
+            }
+
+            // Create connections between nearby nodes
+            nodes.forEach((nodeA, i) => {
+                nodes.slice(i + 1).forEach(nodeB => {
+                    const distance = Math.sqrt(
+                        Math.pow(nodeA.x - nodeB.x, 2) + Math.pow(nodeA.y - nodeB.y, 2)
+                    );
+                    
+                    if (distance < 200) {
+                        const connection = document.createElement('div');
+                        connection.className = 'network-connection';
+                        const angle = Math.atan2(nodeB.y - nodeA.y, nodeB.x - nodeA.x);
+                        connection.style.cssText = `
+                            left: ${nodeA.x}px;
+                            top: ${nodeA.y}px;
+                            width: ${distance}px;
+                            transform: rotate(${angle}rad);
+                            animation-delay: ${Math.random() * 8}s;
+                        `;
+                        neuralNetwork.appendChild(connection);
+                    }
+                });
+            });
+            console.log('✅ Neural network created successfully');
+        } catch (error) {
+            console.error('❌ Error creating neural network:', error);
+        }
+    }
+
+    createMatrixRain() {
+        try {
+            const matrixRain = document.createElement('div');
+            matrixRain.className = 'matrix-rain';
+            document.body.appendChild(matrixRain);
+
+            const characters = '01Swift{}[]()iOS;:,.@#$%^&*+=<>?|\\~`';
+            const columns = Math.floor(window.innerWidth / 20);
+
+            for (let i = 0; i < Math.min(columns, 50); i++) { // Limit columns for performance
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                
+                let text = '';
+                for (let j = 0; j < 20; j++) {
+                    text += characters[Math.floor(Math.random() * characters.length)];
+                }
+                column.textContent = text;
+                
+                column.style.cssText = `
+                    left: ${i * 20}px;
+                    animation-duration: ${5 + Math.random() * 10}s;
+                    animation-delay: ${Math.random() * 5}s;
+                `;
+                matrixRain.appendChild(column);
+            }
+            console.log('✅ Matrix rain created successfully');
+        } catch (error) {
+            console.error('❌ Error creating matrix rain:', error);
+        }
+    }
+
+    createHolographicGrid() {
+        try {
+            const grid = document.createElement('div');
+            grid.className = 'holographic-grid';
+            document.body.appendChild(grid);
+            console.log('✅ Holographic grid created successfully');
+        } catch (error) {
+            console.error('❌ Error creating holographic grid:', error);
+        }
+    }
+
+    createDNAHelix() {
+        try {
+            const dnaHelix = document.createElement('div');
+            dnaHelix.className = 'dna-helix';
+            
+            // Create DNA strands
+            for (let i = 0; i < 2; i++) {
+                const strand = document.createElement('div');
+                strand.className = 'dna-strand';
+                dnaHelix.appendChild(strand);
+            }
+
+            // Create DNA bases
+            for (let i = 0; i < 20; i++) {
+                const base = document.createElement('div');
+                base.className = 'dna-base';
+                base.style.cssText = `
+                    top: ${i * 30}px;
+                    animation-delay: ${i * 0.1}s;
+                `;
+                dnaHelix.appendChild(base);
+            }
+
+            document.body.appendChild(dnaHelix);
+            console.log('✅ DNA helix created successfully');
+        } catch (error) {
+            console.error('❌ Error creating DNA helix:', error);
+        }
+    }
+
+    initInteractiveCursor() {
+        // Create cursor glow effect
+        const cursorGlow = document.createElement('div');
+        cursorGlow.className = 'cursor-glow';
+        document.body.appendChild(cursorGlow);
+
+        // Create cursor trail
+        const cursorTrail = document.createElement('div');
+        cursorTrail.className = 'cursor-trail';
+        document.body.appendChild(cursorTrail);
+
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+        let trailX = 0, trailY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Show cursor effects
+            cursorGlow.style.opacity = '1';
+            cursorTrail.style.opacity = '1';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.style.opacity = '0';
+            cursorTrail.style.opacity = '0';
+        });
+
+        // Smooth cursor following animation
+        const updateCursor = () => {
+            const speed = 0.1;
+            glowX += (mouseX - glowX) * speed;
+            glowY += (mouseY - glowY) * speed;
+            
+            const trailSpeed = 0.2;
+            trailX += (mouseX - trailX) * trailSpeed;
+            trailY += (mouseY - trailY) * trailSpeed;
+
+            cursorGlow.style.transform = `translate(${glowX - 150}px, ${glowY - 150}px)`;
+            cursorTrail.style.transform = `translate(${trailX - 3}px, ${trailY - 3}px)`;
+            
+            requestAnimationFrame(updateCursor);
+        };
+        updateCursor();
+
+        // Add hover effects for interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .btn, .project-card, .skill-category, .contact-item');
+        
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursorGlow.style.transform += ' scale(1.5)';
+                cursorTrail.style.transform += ' scale(2)';
+                cursorTrail.style.background = 'rgba(255, 149, 0, 0.8)';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursorGlow.style.transform = cursorGlow.style.transform.replace(' scale(1.5)', '');
+                cursorTrail.style.transform = cursorTrail.style.transform.replace(' scale(2)', '');
+                cursorTrail.style.background = 'rgba(0, 122, 255, 0.6)';
+            });
+        });
     }
 
     startTypingEffect() {
@@ -527,9 +875,18 @@ class PortfolioController {
                     const skillProgress = entry.target;
                     const width = skillProgress.getAttribute('data-width');
                     
+                    // Add a slight delay for staggered animation
+                    const delay = Array.from(entry.target.parentNode.parentNode.children).indexOf(entry.target.parentNode) * 100;
+                    
                     setTimeout(() => {
                         skillProgress.style.width = width + '%';
-                    }, 200);
+                        
+                        // Add a class to trigger any additional animations
+                        skillProgress.classList.add('animated');
+                        
+                        // Log for debugging
+                        console.log(`✅ Skill bar animated: ${width}%`);
+                    }, delay);
                     
                     observer.unobserve(skillProgress);
                 }
@@ -565,20 +922,57 @@ class PortfolioController {
         
         if (isMobile) {
             document.body.classList.add('mobile');
+            this.optimizeForMobile();
         } else {
             document.body.classList.remove('mobile');
+            this.restoreDesktopEffects();
         }
+    }
+
+    optimizeForMobile() {
+        // Reduce particle count and complexity for mobile
+        const particles = document.querySelectorAll('.particle.medium, .particle.large');
+        particles.forEach(p => p.style.display = 'none');
+        
+        // Reduce animation complexity
+        const codeElements = document.querySelectorAll('.code-element');
+        codeElements.forEach(el => {
+            el.style.animationDuration = '20s';
+        });
+    }
+
+    restoreDesktopEffects() {
+        // Restore full effects for desktop
+        const particles = document.querySelectorAll('.particle');
+        particles.forEach(p => p.style.display = 'block');
+        
+        const codeElements = document.querySelectorAll('.code-element');
+        codeElements.forEach(el => {
+            el.style.animationDuration = '';
+        });
     }
 }
 
 // Initialize portfolio when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const portfolioController = new PortfolioController();
+    // Check if data is loaded
+    if (typeof portfolioData === 'undefined') {
+        console.error('❌ Portfolio data not loaded! Check data.js file.');
+        return;
+    }
     
-    // Make controller globally available
-    window.portfolioController = portfolioController;
+    console.log('✅ Portfolio data loaded:', portfolioData);
     
-    console.log('🚀 Portfolio initialized successfully!');
+    try {
+        const portfolioController = new PortfolioController();
+        
+        // Make controller globally available
+        window.portfolioController = portfolioController;
+        
+        console.log('🚀 Portfolio initialized successfully!');
+    } catch (error) {
+        console.error('❌ Error initializing portfolio:', error);
+    }
 });
 
 // Utility Functions
