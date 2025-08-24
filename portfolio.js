@@ -354,18 +354,36 @@ class PortfolioController {
     renderProjectLinks(project) {
         const links = [];
         
-        if (this.data.featureControl.projects.showGithubLinks !== false) {
+        // GitHub link - only show if enabled, has valid URL, and not '#' or empty
+        if (this.data.featureControl.projects.showGithubLinks !== false && 
+            project.github && project.github.trim() !== '' && project.github !== '#') {
             links.push(`
-                <a href="${project.github}" class="project-link" ${project.github !== '#' ? 'target="_blank"' : ''}>
+                <a href="${project.github}" class="project-link" target="_blank">
                     <i class="fab fa-github"></i> GitHub
                 </a>
             `);
         }
         
-        if (this.data.featureControl.projects.showDemoLinks !== false) {
+        // Demo link - only show if enabled, has valid URL, and not '#' or empty
+        if (this.data.featureControl.projects.showDemoLinks !== false && 
+            project.demo && project.demo.trim() !== '' && project.demo !== '#') {
             links.push(`
-                <a href="${project.demo}" class="project-link" ${project.demo !== '#' ? 'target="_blank"' : ''}>
-                    <i class="fas fa-external-link-alt"></i> ${this.getProjectLinkText(project.type)}
+                <a href="${project.demo}" class="project-link" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Demo
+                </a>
+            `);
+        }
+        
+        // App Store link - only show if enabled, has valid URL, and not '#' or empty
+        if (this.data.featureControl.projects.showAppStoreLinks !== false && 
+            project.appStore && project.appStore.trim() !== '' && project.appStore !== '#') {
+            
+            // Determine the icon and text based on the store URL
+            const storeInfo = this.getStoreInfo(project.appStore);
+            
+            links.push(`
+                <a href="${project.appStore}" class="project-link" target="_blank">
+                    <i class="${storeInfo.icon}"></i> ${storeInfo.text}
                 </a>
             `);
         }
@@ -398,6 +416,39 @@ class PortfolioController {
             'Cross-Platform': 'Live Demo'
         };
         return linkTexts[type] || 'Demo';
+    }
+
+    getStoreInfo(storeUrl) {
+        // Detect store type based on URL and return appropriate icon and text
+        const url = storeUrl.toLowerCase();
+        
+        if (url.includes('apps.apple.com') || url.includes('itunes.apple.com') || url.includes('appstore')) {
+            return {
+                icon: 'fab fa-app-store-ios',
+                text: 'App Store'
+            };
+        } else if (url.includes('play.google.com') || url.includes('playstore') || url.includes('googleplay')) {
+            return {
+                icon: 'fab fa-google-play',
+                text: 'Play Store'
+            };
+        } else if (url.includes('microsoft.com/store') || url.includes('microsoftstore')) {
+            return {
+                icon: 'fab fa-microsoft',
+                text: 'Microsoft Store'
+            };
+        } else if (url.includes('amazon.com') && url.includes('app')) {
+            return {
+                icon: 'fab fa-amazon',
+                text: 'Amazon Appstore'
+            };
+        } else {
+            // Default fallback
+            return {
+                icon: 'fas fa-external-link-alt',
+                text: 'Download'
+            };
+        }
     }
 
     populateExperienceSection() {

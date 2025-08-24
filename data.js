@@ -39,6 +39,7 @@ const portfolioData = {
             showImages: true,         // Show project images (fallback to icons if false)
             showGithubLinks: true,    // Show GitHub links
             showDemoLinks: true,      // Show demo/live links
+            showAppStoreLinks: true,  // Show App Store links
             showTechnologies: true    // Show technology tags
         },
         contact: {
@@ -155,6 +156,7 @@ const portfolioData = {
             technologies: ["SwiftUI", "Combine", "MVVM", "Lottie"],
             github: "https://github.com/Junaed29/SwiftUI-Professional-Network",
             demo: "https://youtube.com/shorts/BaY5gXrCIrs?feature=share",
+            appStore: "https://apps.apple.com/app/swiftui-professional-network/id123456789", // Add your actual App Store link here
             type: "iOS",
             icon: "fas fa-users",
             image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=200&h=200&fit=crop&crop=center", // Professional networking themed image
@@ -188,6 +190,7 @@ const portfolioData = {
             technologies: ["Java", "Kotlin", "Room Database", "Firebase"],
             github: "#",
             demo: "https://play.google.com/store/search?q=hooray+health+app&c=apps&hl=en",
+            appStore: "https://play.google.com/store/apps/details?id=com.hoorayhealth.android",
             type: "Android",
             icon: "fas fa-heart",
             image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=200&h=200&fit=crop&crop=center", // Android/healthcare themed
@@ -199,6 +202,7 @@ const portfolioData = {
             technologies: ["Java", "Android SDK", "Room Database", "XML"],
             github: "#",
             demo: "https://play.google.com/store/apps/details?id=com.sul.purity",
+            appStore: "https://play.google.com/store/apps/details?id=com.sul.purity",
             type: "Android",
             icon: "fas fa-book",
             image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=200&h=200&fit=crop&crop=center", // Book/education themed
