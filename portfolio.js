@@ -183,6 +183,20 @@ class PortfolioController {
         ).join('');
         
         console.log('✅ Navigation updated with visible sections:', visibleSections.map(s => s.label));
+        
+        // Ensure proper active state after DOM update
+        setTimeout(() => {
+            this.setInitialActiveNavigation();
+        }, 100);
+    }
+
+    setInitialActiveNavigation() {
+        // Set the first visible section as active initially
+        const firstNavLink = document.querySelector('.nav-links a');
+        if (firstNavLink && !document.querySelector('.nav-links a.active')) {
+            firstNavLink.classList.add('active');
+            console.log('🎯 Set initial active navigation:', firstNavLink.textContent);
+        }
     }
 
     populateHeroSection() {
@@ -624,30 +638,66 @@ class PortfolioController {
         const navbar = document.getElementById('navbar');
         const navLinks = document.querySelectorAll('.nav-links a');
         
-        window.addEventListener('scroll', () => {
+        // Enhanced scroll event with throttling for better performance
+        let ticking = false;
+        
+        const updateNavigation = () => {
+            // Update navbar background on scroll
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
             }
             
+            // Enhanced section detection
             const sections = document.querySelectorAll('section[id]');
             let currentSection = '';
+            const scrollPosition = window.scrollY + 150; // Better offset for detection
             
             sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                if (window.scrollY >= sectionTop) {
-                    currentSection = section.getAttribute('id');
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                // Check if we're in the section's range
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = sectionId;
                 }
             });
             
+            // Special case for the last section
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                const lastSection = sections[sections.length - 1];
+                if (lastSection) {
+                    currentSection = lastSection.getAttribute('id');
+                }
+            }
+            
+            // Update active navigation link
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSection}`) {
+                const href = link.getAttribute('href');
+                if (href === `#${currentSection}`) {
                     link.classList.add('active');
+                    console.log(`🎯 Active section: ${currentSection}`); // Debug log
                 }
             });
-        });
+            
+            ticking = false;
+        };
+        
+        const requestTick = () => {
+            if (!ticking) {
+                requestAnimationFrame(updateNavigation);
+                ticking = true;
+            }
+        };
+        
+        // Throttled scroll event
+        window.addEventListener('scroll', requestTick);
+        
+        // Initial call to set correct active state
+        updateNavigation();
     }
 
     updateActiveNavLink(activeLink) {
