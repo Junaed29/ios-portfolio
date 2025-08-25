@@ -240,7 +240,7 @@ const portfolioData = {
             technologies: ["Java", "Kotlin", "Android SDK", "Room Database"]
         },
         {
-            period: "2019 - 2021",
+            period: "2016 - 2021",
             title: "Computer Science Student",
             company: "Bangladesh Army University of Engineering and Technology",
             description: "Completed Bachelor of Science in Computer Science and Engineering. Won 2nd Runner-Up at Inter-University Project Fair (2019) for Attendance Management System. Certified in Mobile Games & App Development (2018) and National Programming Contest participation.",
