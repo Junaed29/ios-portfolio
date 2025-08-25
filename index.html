@@ -1295,14 +1295,45 @@
                 display: block;
             }
 
+            /* Fixed hero section for mobile */
+            .hero {
+                height: 100vh;
+                min-height: 600px; /* Ensure minimum height */
+                padding: 100px 0 60px; /* Add top padding to avoid navbar overlap */
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+                max-width: 100%;
+            }
+
+            /* Fixed hero image positioning for mobile */
+            .hero-image {
+                width: 160px;
+                height: 160px;
+                margin: 0 auto 1.5rem;
+                border: 3px solid rgba(255, 255, 255, 0.2);
+            }
+
             .hero h1 {
                 font-size: 2.5rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .typing-text {
+                font-size: 1rem;
             }
 
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
                 gap: 0.8rem;
+                margin-top: 1.5rem;
             }
 
             .btn {
@@ -1374,12 +1405,37 @@
         }
 
         @media (max-width: 480px) {
+            /* Enhanced mobile styles for very small screens */
+            .hero {
+                min-height: 550px;
+                padding: 80px 0 40px;
+            }
+
+            .hero-image {
+                width: 140px;
+                height: 140px;
+                margin: 0 auto 1rem;
+            }
+
             .hero h1 {
                 font-size: 2rem;
+                line-height: 1.2;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .typing-text {
+                font-size: 0.9rem;
             }
 
             .section-title {
                 font-size: 2rem;
+            }
+
+            section {
+                padding: 40px 0.75rem;
             }
 
             /* Further reduce animations on very small screens */
@@ -1390,6 +1446,33 @@
             .holographic-grid {
                 opacity: 0.3;
                 background-size: 30px 30px;
+            }
+        }
+
+        /* Additional mobile landscape orientation fix */
+        @media (max-width: 768px) and (orientation: landscape) and (max-height: 500px) {
+            .hero {
+                height: auto;
+                min-height: 450px;
+                padding: 60px 0 40px;
+            }
+
+            .hero-image {
+                width: 120px;
+                height: 120px;
+                margin: 0 auto 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                margin-top: 1rem;
             }
         }
 
