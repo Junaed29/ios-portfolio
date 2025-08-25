@@ -69,6 +69,12 @@
             box-sizing: border-box;
         }
 
+        html {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
             background: var(--darker-bg);
@@ -76,6 +82,9 @@
             overflow-x: hidden;
             line-height: 1.6;
             font-size: 16px;
+            width: 100%;
+            max-width: 100vw;
+            position: relative;
         }
 
         /* Enhanced Background Animation System */
@@ -303,6 +312,8 @@
         nav {
             position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             width: 100%;
             padding: 1rem 2rem;
             background: rgba(28, 28, 30, 0.9);
@@ -310,6 +321,8 @@
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
             transition: all 0.3s ease;
+            min-height: 70px; /* Ensure minimum height */
+            box-sizing: border-box;
         }
 
         nav.scrolled {
@@ -1366,24 +1379,97 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            /* Prevent horizontal scrolling */
+            html, body {
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+            }
+
+            /* Enhanced navigation for mobile */
+            nav {
+                padding: 0.75rem 1rem;
+                min-height: 60px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                max-width: 100vw;
+                background: rgba(28, 28, 30, 0.95);
+                backdrop-filter: blur(20px);
+                z-index: 1001;
+                border-bottom: 1px solid var(--glass-border);
+                /* Ensure it stays above mobile browser UI */
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+                box-sizing: border-box;
+            }
+
+            .nav-container {
+                max-width: 100%;
+                width: 100%;
+                padding: 0;
+                height: 100%;
+                min-height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                box-sizing: border-box;
+            }
+
+            /* Prevent all sections from overflowing */
+            section {
+                padding: 60px 1rem;
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+
+            /* Container elements should not overflow */
+            .hero-content,
+            .about-content,
+            .skills-grid,
+            .projects-grid,
+            .timeline,
+            .contact-content {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+                font-weight: 700;
+            }
+
             .nav-links {
                 display: none;
             }
 
             .mobile-menu-btn {
                 display: block;
+                padding: 0.5rem;
+                z-index: 1002;
             }
 
             /* Fixed hero section for mobile */
             .hero {
                 height: 100vh;
                 min-height: 600px; /* Ensure minimum height */
-                padding: 100px 0 60px; /* Add top padding to avoid navbar overlap */
+                padding: 120px 1rem 60px; /* Increased top padding to account for fixed nav */
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden;
+                box-sizing: border-box;
             }
 
             .hero-content {
-                padding: 0 1rem;
+                padding: 0;
                 max-width: 100%;
+                width: 100%;
             }
 
             /* Fixed hero image positioning for mobile */
@@ -1397,15 +1483,21 @@
             .hero h1 {
                 font-size: 2.5rem;
                 margin-bottom: 0.8rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
 
             .hero-subtitle {
                 font-size: 1.1rem;
                 margin-bottom: 0.8rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
 
             .typing-text {
                 font-size: 1rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
 
             .hero-buttons {
@@ -1413,12 +1505,14 @@
                 align-items: center;
                 gap: 0.8rem;
                 margin-top: 1.5rem;
+                width: 100%;
             }
 
             .btn {
                 width: 100%;
                 max-width: 280px;
                 justify-content: center;
+                box-sizing: border-box;
             }
 
             .about-content {
@@ -1447,6 +1541,7 @@
                 left: 0 !important;
                 padding-left: 4rem !important;
                 padding-right: 0 !important;
+                box-sizing: border-box;
             }
 
             .contact-content {
@@ -1454,8 +1549,13 @@
                 gap: 2rem;
             }
 
-            section {
-                padding: 60px 1rem;
+            /* Mobile menu positioning adjustment */
+            .nav-links.mobile-active {
+                top: 60px; /* Match the navbar height */
+                width: 100vw;
+                left: 0;
+                right: 0;
+                box-sizing: border-box;
             }
 
             /* Reduce effects on mobile for performance */
