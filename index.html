@@ -1406,6 +1406,12 @@
                 box-sizing: border-box;
             }
 
+            /* Remove any potential overlay elements on mobile */
+            .hero::before,
+            .hero::after {
+                display: none !important;
+            }
+
             .nav-container {
                 max-width: 100%;
                 width: 100%;
@@ -1457,27 +1463,47 @@
 
             /* Fixed hero section for mobile */
             .hero {
-                height: 100vh;
-                min-height: 600px; /* Ensure minimum height */
-                padding: 120px 1rem 60px; /* Increased top padding to account for fixed nav */
+                height: auto; /* Change from 100vh to auto */
+                min-height: 100vh; /* Maintain minimum viewport height */
+                padding: 160px 1rem 80px; /* Increased top padding from 130px to 160px */
                 width: 100%;
                 max-width: 100vw;
                 overflow-x: hidden;
                 box-sizing: border-box;
+                position: relative;
+                z-index: 1; /* Ensure hero is above background */
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .hero-content {
-                padding: 0;
+                padding: 2rem 0; /* Increased vertical padding for more animation space */
                 max-width: 100%;
                 width: 100%;
+                position: relative;
+                z-index: 10; /* Higher z-index to ensure it's above any overlays */
+            }
+
+            /* Ensure background animation stays behind on mobile */
+            .bg-animation {
+                z-index: -10 !important;
+            }
+
+            .bg-animation::before,
+            .bg-animation::after {
+                z-index: -1 !important;
+                opacity: 0.3; /* Reduce opacity further on mobile */
             }
 
             /* Fixed hero image positioning for mobile */
             .hero-image {
                 width: 160px;
                 height: 160px;
-                margin: 0 auto 1.5rem;
+                margin: 2rem auto 2rem; /* Increased margins for more scaling space */
                 border: 3px solid rgba(255, 255, 255, 0.2);
+                position: relative;
+                z-index: 15; /* Ensure image is above everything */
             }
 
             .hero h1 {
@@ -1579,7 +1605,8 @@
 
             .bg-animation::before,
             .bg-animation::after {
-                opacity: 0.5;
+                opacity: 0.2; /* Significantly reduced opacity on mobile */
+                z-index: -10 !important;
             }
         }
 
