@@ -187,7 +187,35 @@ class PortfolioController {
         // Ensure proper active state after DOM update
         setTimeout(() => {
             this.setInitialActiveNavigation();
+            // Re-setup mobile menu after navigation is populated
+            this.setupMobileMenuClickHandlers();
         }, 100);
+    }
+
+    setupMobileMenuClickHandlers() {
+        // This function sets up click handlers for dynamically generated nav links
+        const navLinks = document.getElementById('navLinks');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        
+        if (navLinks && mobileMenuBtn) {
+            const navLinksItems = navLinks.querySelectorAll('a');
+            navLinksItems.forEach(link => {
+                // Remove existing listeners to avoid duplicates
+                link.removeEventListener('click', this.handleMobileNavClick);
+                // Add new listener
+                link.addEventListener('click', this.handleMobileNavClick.bind(this, mobileMenuBtn, navLinks));
+            });
+        }
+    }
+
+    handleMobileNavClick(mobileMenuBtn, navLinksContainer) {
+        // Close mobile menu when nav link is clicked
+        navLinksContainer.classList.remove('mobile-active');
+        const icon = mobileMenuBtn.querySelector('i');
+        if (icon) {
+            icon.className = 'fas fa-bars';
+        }
+        console.log('📱 Mobile menu closed (nav link clicked)');
     }
 
     setInitialActiveNavigation() {
@@ -715,9 +743,47 @@ class PortfolioController {
         const navLinks = document.getElementById('navLinks');
         
         if (mobileMenuBtn && navLinks) {
-            mobileMenuBtn.addEventListener('click', () => {
+            // Toggle mobile menu
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navLinks.classList.toggle('mobile-active');
+                
+                // Change hamburger icon
+                const icon = mobileMenuBtn.querySelector('i');
+                if (navLinks.classList.contains('mobile-active')) {
+                    icon.className = 'fas fa-times';
+                    console.log('📱 Mobile menu opened');
+                } else {
+                    icon.className = 'fas fa-bars';
+                    console.log('📱 Mobile menu closed');
+                }
             });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (navLinks.classList.contains('mobile-active') && 
+                    !navLinks.contains(e.target) && 
+                    !mobileMenuBtn.contains(e.target)) {
+                    navLinks.classList.remove('mobile-active');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.className = 'fas fa-bars';
+                    console.log('📱 Mobile menu closed (clicked outside)');
+                }
+            });
+
+            // Close menu on window resize (if switching to desktop)
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && navLinks.classList.contains('mobile-active')) {
+                    navLinks.classList.remove('mobile-active');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.className = 'fas fa-bars';
+                    console.log('📱 Mobile menu closed (resized to desktop)');
+                }
+            });
+            
+            console.log('✅ Enhanced mobile menu setup complete');
+        } else {
+            console.warn('⚠️ Mobile menu elements not found');
         }
     }
 
