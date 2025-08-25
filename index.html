@@ -642,19 +642,21 @@
         }
 
         .skill-bar {
-            height: 6px;
-            background: rgba(142, 142, 147, 0.3);
-            border-radius: 3px;
+            height: 8px;
+            background: rgba(142, 142, 147, 0.2);
+            border-radius: 4px;
             overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
         .skill-progress {
             height: 100%;
             background: var(--gradient-primary);
-            border-radius: 3px;
-            transition: width 2s ease, opacity 0.5s ease;
+            border-radius: 4px;
+            transition: width 4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.8s ease; /* Increased from 2.5s to 4s with smoother easing */
             width: 0%;
-            opacity: 0;
+            opacity: 1; /* Changed: Make visible by default */
             position: relative;
             overflow: hidden;
         }
@@ -663,28 +665,68 @@
             opacity: 1;
         }
 
-        /* Different colors for different skill categories */
+        /* Animation state classes */
+        .skill-progress.preparing {
+            box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
+            animation: preparePulse 0.5s ease-in-out;
+        }
+
+        .skill-progress.animating {
+            box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
+        }
+
+        .skill-progress.completed {
+            box-shadow: 0 0 20px rgba(0, 122, 255, 0.6);
+        }
+
+        @keyframes preparePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Enhanced colors with better gradients and animations */
         .skill-category:nth-child(1) .skill-progress {
-            background: linear-gradient(135deg, #007AFF, #5856D6);
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+            background: linear-gradient(135deg, #007AFF, #5856D6, #007AFF);
+            background-size: 200% 100%;
+            box-shadow: 0 3px 12px rgba(0, 122, 255, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: gradientFlow 3s ease-in-out infinite alternate;
         }
 
         .skill-category:nth-child(2) .skill-progress {
-            background: linear-gradient(135deg, #34C759, #30D158);
-            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
+            background: linear-gradient(135deg, #34C759, #30D158, #34C759);
+            background-size: 200% 100%;
+            box-shadow: 0 3px 12px rgba(52, 199, 89, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: gradientFlow 3s ease-in-out infinite alternate;
+            animation-delay: 0.5s;
         }
 
         .skill-category:nth-child(3) .skill-progress {
-            background: linear-gradient(135deg, #FF9500, #FF6B35);
-            box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
+            background: linear-gradient(135deg, #FF9500, #FF6B35, #FF9500);
+            background-size: 200% 100%;
+            box-shadow: 0 3px 12px rgba(255, 149, 0, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: gradientFlow 3s ease-in-out infinite alternate;
+            animation-delay: 1s;
         }
 
         .skill-category:nth-child(4) .skill-progress {
-            background: linear-gradient(135deg, #FF3B30, #FF453A);
-            box-shadow: 0 2px 8px rgba(255, 59, 48, 0.3);
+            background: linear-gradient(135deg, #FF3B30, #FF453A, #FF3B30);
+            background-size: 200% 100%;
+            box-shadow: 0 3px 12px rgba(255, 59, 48, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: gradientFlow 3s ease-in-out infinite alternate;
+            animation-delay: 1.5s;
         }
 
-        /* Add glow effect to skill progress bars */
+        /* Gradient flow animation */
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Enhanced glow effect */
         .skill-progress::after {
             content: '';
             position: absolute;
@@ -694,16 +736,17 @@
             bottom: 0;
             background: inherit;
             border-radius: inherit;
-            box-shadow: 0 0 10px rgba(0, 122, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 122, 255, 0.6);
             opacity: 0;
             transition: opacity 0.3s ease;
+            filter: blur(1px);
         }
 
         .skill-category:hover .skill-progress::after {
-            opacity: 1;
+            opacity: 0.8;
         }
 
-        /* Animated shimmer effect */
+        /* Enhanced shimmer effect */
         .skill-progress::before {
             content: '';
             position: absolute;
@@ -713,10 +756,89 @@
             height: 100%;
             background: linear-gradient(90deg, 
                 transparent, 
-                rgba(255, 255, 255, 0.4), 
+                rgba(255, 255, 255, 0.6), 
+                rgba(255, 255, 255, 0.4),
                 transparent);
-            animation: shimmer 2s ease-in-out;
-            animation-delay: 1s;
+            animation: shimmer 2.5s ease-in-out;
+            animation-delay: 2s;
+            transform: skewX(-15deg);
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Pulse effect for animated bars */
+        .skill-progress.animated::after {
+            animation: pulse 2s ease-in-out infinite;
+            animation-delay: 3s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Enhanced skill category hover effects */
+        .skill-category {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(44, 44, 46, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .skill-category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.15);
+        }
+
+        .skill-category:hover .skill-progress {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(0, 122, 255, 0.6);
+        }
+
+        /* Percentage display styling */
+        .skill-percentage {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: auto;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .skill-progress.animated + .skill-percentage,
+        .skill-item .skill-info .skill-percentage {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Completion glow effect */
+        .skill-progress.completed {
+            position: relative;
+        }
+
+        .skill-progress.completed::after {
+            animation: completionGlow 1s ease-out;
+        }
+
+        @keyframes completionGlow {
+            0% { 
+                box-shadow: 0 0 5px rgba(0, 122, 255, 0.3);
+                opacity: 0.3;
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(0, 122, 255, 0.8);
+                opacity: 0.8;
+            }
+            100% { 
+                box-shadow: 0 0 5px rgba(0, 122, 255, 0.3);
+                opacity: 0.3;
+            }
         }
 
         @keyframes shimmer {

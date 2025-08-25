@@ -331,6 +331,9 @@ class PortfolioController {
             
             // Also add a manual trigger for testing
             this.addManualSkillBarTrigger();
+            
+            // Fallback: ensure bars show even if animation fails
+            this.ensureSkillBarsVisible();
         }, 100);
     }
 
@@ -1161,7 +1164,7 @@ class PortfolioController {
     }
 
     animateSkillBars() {
-        console.log('🔄 Setting up skill bar animations...');
+        console.log('🔄 Setting up enhanced skill bar animations...');
         
         const skillBars = document.querySelectorAll('.skill-progress[data-width]');
         console.log(`📊 Found ${skillBars.length} skill bars to animate`);
@@ -1171,30 +1174,31 @@ class PortfolioController {
             return;
         }
 
+        // Enhanced observer options for full card visibility
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: 0.8, // Increased from 0.2 to 0.8 - requires 80% of element to be visible
+            rootMargin: '0px 0px -10px 0px' // Reduced margin for more precise triggering
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.8) { // Extra check for 80% visibility
                     const skillProgress = entry.target;
                     const width = skillProgress.getAttribute('data-width');
+                    const skillItem = skillProgress.closest('.skill-item');
+                    const skillName = skillItem.querySelector('.skill-name span').textContent;
                     
-                    console.log(`🎯 Animating skill bar to ${width}%`);
+                    console.log(`🎯 Full card visible - Animating ${skillName} skill bar to ${width}%`);
                     
-                    // Add a slight delay for staggered animation
-                    const delay = Array.from(entry.target.parentNode.parentNode.children).indexOf(entry.target.parentNode) * 100;
+                    // Calculate staggered delay based on position within category
+                    const skillCategory = skillProgress.closest('.skill-category');
+                    const categoryIndex = Array.from(skillCategory.parentNode.children).indexOf(skillCategory);
+                    const barIndex = Array.from(skillCategory.querySelectorAll('.skill-progress')).indexOf(skillProgress);
+                    const delay = (categoryIndex * 300) + (barIndex * 200); // Increased delays for slower, more dramatic effect
                     
                     setTimeout(() => {
-                        skillProgress.style.width = width + '%';
-                        skillProgress.style.opacity = '1';
-                        
-                        // Add a class to trigger any additional animations
-                        skillProgress.classList.add('animated');
-                        
-                        console.log(`✅ Skill bar animated to ${width}%`);
+                        // Enhanced animation sequence with slower timing
+                        this.animateSkillBarSlow(skillProgress, width, skillName);
                     }, delay);
                     
                     observer.unobserve(skillProgress);
@@ -1203,37 +1207,130 @@ class PortfolioController {
         }, observerOptions);
 
         skillBars.forEach((bar, index) => {
-            console.log(`🔍 Observing skill bar ${index + 1}: ${bar.getAttribute('data-width')}%`);
+            const width = bar.getAttribute('data-width');
+            console.log(`🔍 Observing skill bar ${index + 1}: ${width}% (waiting for full visibility)`);
             observer.observe(bar);
         });
         
-        console.log('✅ Skill bar animation observer set up');
+        console.log('✅ Enhanced skill bar animation observer set up with full card visibility detection');
+    }
+
+    animateSkillBar(skillProgress, width, skillName) {
+        // Simple and reliable animation
+        console.log(`🎯 Animating ${skillName}: ${width}%`);
+        
+        // Set width directly with animation
+        setTimeout(() => {
+            skillProgress.style.width = width + '%';
+            skillProgress.classList.add('animated');
+            console.log(`✅ ${skillName} skill bar set to ${width}%`);
+        }, 100);
+    }
+
+    animateSkillBarSlow(skillProgress, width, skillName) {
+        // Enhanced slow animation with visual feedback
+        console.log(`🎯 Starting slow animation for ${skillName}: ${width}%`);
+        
+        // Add preparation class for additional styling
+        skillProgress.classList.add('preparing');
+        
+        // Stage 1: Preparation (brief pause)
+        setTimeout(() => {
+            skillProgress.classList.remove('preparing');
+            skillProgress.classList.add('animating');
+            console.log(`🌊 Beginning slow fill for ${skillName}`);
+        }, 150);
+        
+        // Stage 2: Slow fill animation
+        setTimeout(() => {
+            skillProgress.style.width = width + '%';
+            skillProgress.classList.add('animated');
+            console.log(`⏳ ${skillName} skill bar slowly filling to ${width}%`);
+        }, 300);
+        
+        // Stage 3: Completion effect (after animation completes)
+        setTimeout(() => {
+            skillProgress.classList.add('completed');
+            this.addSkillCompletionEffect(skillProgress);
+            console.log(`✨ ${skillName} skill bar animation completed`);
+        }, 4500); // 4.5 seconds total (300ms delay + 4s animation + 200ms buffer)
+    }
+
+    addSkillCompletionEffect(skillProgress) {
+        // Add a completion glow effect
+        const originalBoxShadow = skillProgress.style.boxShadow;
+        skillProgress.style.boxShadow = `
+            0 0 20px rgba(0, 122, 255, 0.8),
+            0 0 40px rgba(0, 122, 255, 0.4)
+        `;
+        
+        // Remove the effect after a short time
+        setTimeout(() => {
+            skillProgress.style.boxShadow = originalBoxShadow;
+        }, 1000);
     }
 
     addManualSkillBarTrigger() {
-        // Add a manual trigger for testing
+        // Enhanced manual trigger for testing with slow animation
         window.triggerSkillBars = () => {
-            console.log('🔧 Manual skill bar trigger activated');
+            console.log('🔧 Enhanced manual skill bar trigger activated (slow mode)');
             const skillBars = document.querySelectorAll('.skill-progress[data-width]');
             skillBars.forEach((bar, index) => {
                 const width = bar.getAttribute('data-width');
+                const skillItem = bar.closest('.skill-item');
+                const skillName = skillItem.querySelector('.skill-name span').textContent;
+                
                 setTimeout(() => {
-                    bar.style.width = width + '%';
-                    bar.style.opacity = '1';
-                    bar.classList.add('animated');
-                    console.log(`✅ Manual animation: ${width}%`);
-                }, index * 100);
+                    this.animateSkillBarSlow(bar, width, skillName);
+                    console.log(`✅ Manual slow animation: ${skillName} - ${width}%`);
+                }, index * 200); // Increased delay between bars
             });
         };
         
-        // Auto-trigger after 3 seconds if not already animated
+        // Enhanced auto-trigger with better detection (now using slow animation)
         setTimeout(() => {
-            const skillBars = document.querySelectorAll('.skill-progress[data-width]:not(.animated)');
-            if (skillBars.length > 0) {
-                console.log('🔧 Auto-triggering skill bars (fallback)');
+            const skillBars = document.querySelectorAll('.skill-progress[data-width]');
+            const animatedBars = document.querySelectorAll('.skill-progress.animated');
+            
+            if (skillBars.length > 0 && animatedBars.length === 0) {
+                console.log('🚀 Auto-triggering enhanced slow skill bars animation');
                 window.triggerSkillBars();
             }
-        }, 3000);
+        }, 3000); // Increased from 2000 to 3000ms to allow for scrolling
+        
+        console.log('🎯 Enhanced manual skill bar trigger added. Use triggerSkillBars() to test slow animations.');
+        
+        // Add debug function
+        window.debugSkillBars = () => {
+            const skillBars = document.querySelectorAll('.skill-progress[data-width]');
+            console.log(`📊 Found ${skillBars.length} skill bars:`);
+            skillBars.forEach((bar, index) => {
+                const width = bar.getAttribute('data-width');
+                const currentWidth = bar.style.width;
+                const isAnimated = bar.classList.contains('animated');
+                const isCompleted = bar.classList.contains('completed');
+                console.log(`  ${index + 1}. Width: ${width}%, Current: ${currentWidth}, Animated: ${isAnimated}, Completed: ${isCompleted}`);
+            });
+        };
+    }
+
+    ensureSkillBarsVisible() {
+        // Fallback function to ensure skill bars are visible (now with slow animation)
+        setTimeout(() => {
+            const skillBars = document.querySelectorAll('.skill-progress[data-width]');
+            skillBars.forEach((bar, index) => {
+                if (!bar.classList.contains('animated')) {
+                    const width = bar.getAttribute('data-width');
+                    const skillItem = bar.closest('.skill-item');
+                    const skillName = skillItem.querySelector('.skill-name span').textContent;
+                    
+                    setTimeout(() => {
+                        this.animateSkillBarSlow(bar, width, skillName);
+                        console.log(`🔧 Fallback slow animation: ${skillName} at ${width}%`);
+                    }, index * 200);
+                }
+            });
+        }, 5000); // Increased from 3000 to 5000ms to allow more time for intersection observer
     }
 
     initScrollAnimations() {
