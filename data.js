@@ -58,7 +58,7 @@ const portfolioData = {
         email: "junaed.dev@gmail.com",
         phone: "+8801723605770",
         experience: "5+ years total (1.5+ years iOS)",
-        profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+        profileImage: "http://avatars.githubusercontent.com/u/34476904?v=4",
         
         // Social Links
         social: {
@@ -70,8 +70,8 @@ const portfolioData = {
         
         // Resume/CV
         resume: {
-            url: "https://drive.google.com/file/d/your-resume-file-id/view", // Replace with your actual resume URL
-            filename: "Junaed_Muhammad_Chowdhury_Resume.pdf",
+            url: "https://drive.google.com/file/d/14xUt7mRUz167zAySVGTczrguqpLL1F1x/view?usp=sharing", // Replace with your actual resume URL
+            filename: "Junaed_Chowdhury_iOS_Developer.pdf",
             isAvailable: true // Set to false if resume is not ready
         }
     },
@@ -156,7 +156,7 @@ const portfolioData = {
             technologies: ["SwiftUI", "Combine", "MVVM", "Lottie"],
             github: "https://github.com/Junaed29/SwiftUI-Professional-Network",
             demo: "https://youtube.com/shorts/BaY5gXrCIrs?feature=share",
-            appStore: "https://apps.apple.com/app/swiftui-professional-network/id123456789", // Add your actual App Store link here
+            appStore: "#", // Add your actual App Store link here
             type: "iOS",
             icon: "fas fa-users",
             image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=200&h=200&fit=crop&crop=center", // Professional networking themed image
@@ -167,10 +167,11 @@ const portfolioData = {
             description: "Healthcare management app with UIKit to SwiftUI migration. Contributed to reducing code complexity by ~30% and improving app load times by ~20%. Available on App Store with enhanced UX and performance.",
             technologies: ["Swift", "SwiftUI", "SwiftData", "Firebase"],
             github: "#",
-            demo: "https://apps.apple.com/us/app/hooray-health/id1285135333",
+            demo: "#",
+            appStore: "https://apps.apple.com/us/app/hooray-health/id1285135333",
             type: "iOS",
             icon: "fas fa-heart",
-            image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=200&h=200&fit=crop&crop=center", // Healthcare themed image
+            image: "https://play-lh.googleusercontent.com/31GHfvg8zIBrp8_fb6jGfRM8Jpy7V6w8sJIqcz2OO7i5ktvkQDsgzgbi1f4MehZ4DTI=w240-h480-rw", // Healthcare themed image
             featured: true
         },
         {
@@ -178,10 +179,11 @@ const portfolioData = {
             description: "Communication and wellness app for iOS. Implemented updates and enhancements to improve user experience and performance. Features modern SwiftUI components and seamless API integration.",
             technologies: ["Swift", "SwiftUI", "REST APIs", "JSON"],
             github: "#",
-            demo: "https://apps.apple.com/us/app/wellcall360/id1485296723",
+            demo: "#",
+            appStore: "https://apps.apple.com/us/app/wellcall360/id1485296723",
             type: "iOS",
             icon: "fas fa-phone",
-            image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=200&h=200&fit=crop&crop=center", // Communication/wellness themed image
+            image: "https://play-lh.googleusercontent.com/DKr1QDmMJOmzedAX2ltSDP46PGsqZAioxqTaDesMng67b8-yEOXeuId-liXmCwIWN-g=w240-h480-rw", // Communication/wellness themed image
             featured: false
         },
         {
@@ -189,11 +191,11 @@ const portfolioData = {
             description: "Android version of healthcare management app. Shipped with 10K+ downloads and maintained 90% crash-free sessions. Built with modern Android architecture and Material Design principles.",
             technologies: ["Java", "Kotlin", "Room Database", "Firebase"],
             github: "#",
-            demo: "https://play.google.com/store/search?q=hooray+health+app&c=apps&hl=en",
-            appStore: "https://play.google.com/store/apps/details?id=com.hoorayhealth.android",
+            demo: "#",
+            appStore: "https://play.google.com/store/search?q=hooray+health+app&c=apps&hl=en",
             type: "Android",
             icon: "fas fa-heart",
-            image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=200&h=200&fit=crop&crop=center", // Android/healthcare themed
+            image: "https://play-lh.googleusercontent.com/31GHfvg8zIBrp8_fb6jGfRM8Jpy7V6w8sJIqcz2OO7i5ktvkQDsgzgbi1f4MehZ4DTI=w240-h480-rw", // Android/healthcare themed
             featured: false
         },
         {
@@ -201,11 +203,11 @@ const portfolioData = {
             description: "Islamic educational app for Android with 5K+ downloads and 5★ rating (487 reviews). Features comprehensive content management, offline reading, and intuitive user interface design.",
             technologies: ["Java", "Android SDK", "Room Database", "XML"],
             github: "#",
-            demo: "https://play.google.com/store/apps/details?id=com.sul.purity",
+            demo: "#",
             appStore: "https://play.google.com/store/apps/details?id=com.sul.purity",
             type: "Android",
             icon: "fas fa-book",
-            image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=200&h=200&fit=crop&crop=center", // Book/education themed
+            image: "https://play-lh.googleusercontent.com/15ujaJaeILyKvXeCTdjJ_uozwVj9egs5ABCq6ezzBuvZBpqdZNF3GDgwOr4bOgHmWS4=w240-h480-rw", // Book/education themed
             featured: false
         },
         {
