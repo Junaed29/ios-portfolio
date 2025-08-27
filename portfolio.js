@@ -632,7 +632,7 @@ class PortfolioController {
 
         const footerText = document.querySelector('footer p');
         if (footerText) {
-            footerText.innerHTML = `&copy; 2025 ${this.data.personal.name}. All rights reserved. Built with ❤️ and cutting-edge web technologies.`;
+            footerText.innerHTML = `&copy; 2025 ${this.data.personal.name}. All rights reserved.`;
         }
     }
 
